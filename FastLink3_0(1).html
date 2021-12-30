@@ -1,0 +1,44 @@
+<script type='text/javascript' src='https://cdn.yodlee.com/fastlink/v3/initialize.js'></script>
+<body>
+  ...
+  <div id="container-fastlink">
+    <div style="text-align: center;">
+      <input type="submit" id="btn-fastlink" value="Link an Account">
+    </div>
+  </div>
+  ...
+  <script>
+    (function (window) {
+      //Open FastLink
+      var fastlinkBtn = document.getElementById('btn-fastlink');
+
+      fastlinkBtn.addEventListener('click', function() {
+        window.fastlink.open({
+          fastLinkURL: 'https://localhost:3000/authenticate/daflqa/',
+          accessToken: 'Bearer 54ec8d655e399a3cb777e4a5e26933d3b7320a6926b1116e914f7ab1fbb4b94f',
+          params: {
+            providerId: '16441', 
+			flow: 'add', 
+			userExperienceFlow: 'Aggregation', 
+			callback: '/ibv/wizard',
+			locationurl: 'file:///C:/Users/sshukla2/Downloads/FastLink3_0(1).html' 
+          },
+          onSuccess: function (data) {
+            console.log(data);
+          },
+          onError: function (data) {
+            console.log(data);
+          },
+          onExit: function (data) {
+            console.log(data);
+          },
+          onEvent: function (data) {
+            console.log(data);
+          }
+        },
+        'container-fastlink');
+      },
+      false);
+    }(window));
+  </script>
+</body>

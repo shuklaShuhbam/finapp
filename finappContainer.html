@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <title>Sample App - Floater Iframe</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script src="https://www.americanexpress.com/qa/adobedtm-acq"></script>
+      <script src="https://qwww.americanexpress.com/adobedtm-myca"></script>
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css" />
+      <!-- <link rel="stylesheet" type="text/css" href="css/websampleApp.css" /> -->
+      <style type="text/css">
+         #client-iframe{
+         min-height: 600px;
+         }
+         .box {
+         margin: 15px auto;
+         width: 500px;
+         background-color: #eeefee;
+         border: 0.0714rem solid #d4d0cf;
+         border-radius: 0.1429rem;
+         padding: 0.928rem 0.857rem;
+         position: relative;
+         vertical-align: middle;
+         text-align: center;
+         font-weight: bold;
+         }
+         .title {
+         font-size: 30px;
+         /*font-family: ProximaNovaSemiBold;*/
+         text-align: center;
+         white-space: nowrap;
+         color: white;
+         margin: 40px 0px;
+         }
+         body {
+         /*background: #003B3A;*/
+         height: 100%;
+         }
+         body{
+         font-family: 'Trebuchet MS', serif;
+         line-height: 1.6;
+         }
+         .container{
+         width: 800px;
+         margin: 0 auto;
+         }
+         ul .tab-link {
+         color: white !important;
+         }
+         ul .tab-link.current {
+         color: black !important;
+         }
+         ul.tabs{
+         margin: 0px;
+         padding: 0px;
+         list-style: none;
+         }
+         ul.tabs li{
+         background: none;
+         color: #222;
+         display: inline-block;
+         padding: 10px 15px;
+         cursor: pointer;
+         }
+         ul.tabs li.current{
+         background: white;
+         color: #222;
+         border: 1px solid #ededed;
+         }
+         .tab-content{
+         display: none;
+         background: white;
+         padding: 15px;
+         border: 1px solid white;
+         }
+         .tab-content.current{
+         display: inherit;
+         }
+         .errorSection {
+         background-color : white;
+         border : 1px solid #dd1507;
+         margin : 1rem 0.714rem;
+         padding : 1.0714rem;
+         }
+         .error-title {
+         color: #dd1507;
+         font-family: ProximaNovaSemiBold;
+         font-size : 1.0714rem;
+         }
+         .error-description {
+         color: $contentSecondaryColor;
+         font-family: $primaryContentFontFamily;
+         font-size : 0.857rem;
+         }
+         .prefix.text-area {
+         height : 4.12rem;
+         }
+         .prefix.text-area label{
+         line-height : 3.5;
+         }
+         .pos {
+         right: 160px;
+         top: 50px;
+         position: absolute;
+         }
+         .box {
+         margin: 0 auto;
+         width: 300px;
+         background-color: #eeefee;
+         border: 0.0714rem solid #d4d0cf;
+         border-radius: 0.1429rem;
+         margin-top: 1.0714rem;
+         padding: 0.928rem 0.857rem;
+         position: relative;
+         vertical-align: middle;
+         text-align: center;
+         font-size: 15px;
+         }
+         .modal-box {
+         display: none;
+         position: absolute;
+         z-index: 1000;
+         background: white;
+         border-bottom: 1px solid #aaa;
+         border-radius: 4px;
+         box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+         border: 1px solid white;
+         background-clip: padding-box;
+         width: 1120px;
+         top:40px !important;
+         }
+         .modal-box {
+         border-bottom: 1px solid #ddd;
+         }
+         .modal-box {
+         padding: 0.2rem;
+         border-top: 1px solid #ddd;
+         background: white;
+         text-align: right;
+         }
+         .modal-overlay {
+         opacity: 0;
+         filter: alpha(opacity=0);
+         position: absolute;
+         top: 0;
+         left: 0;
+         z-index: 900;
+         width: 100%;
+         height: 100%;
+         background: black !important;
+         }
+         a.close {
+         line-height: 1;
+         font-size: 1.5em;
+         position: absolute;
+         top: 5%;
+         right: 2%;
+         text-decoration: none;
+         color: black;
+         right: 23px;
+         top: 22px;
+         }
+         .modal-body {
+         width: 80%;
+         }
+         #helpContent{
+         font-family:sans-serif;
+         padding:40px;
+         position: fixed;
+         bottom:0;
+         width:100%;
+         padding:5px;
+         font-size:13px;
+         color:#555;
+         }
+         #formContainer{
+         padding:40px;
+         }
+         #client-iframe{
+         /*max-height:506px;*/
+         }
+      </style>
+      <!-- <script src="js/jquery.js"></script>  -->
+      <script>
+         $(function(){
+         	var appendthis =  ("<div class='modal-overlay js-modal-close'></div>");
+         	$('a[data-modal-id]').click(function(e) {
+         
+         		e.preventDefault();
+         
+         	    $("body").append(appendthis);
+         
+         	    $(".modal-overlay").fadeTo(500, 0.7);
+         
+         	    $(".js-modalbox").fadeIn(500);
+         
+         	    var modalBox = $(this).attr('data-modal-id');
+         
+         	    $('#'+modalBox).fadeIn($(this).data());
+         
+         	    //$('.modal-body #client-iframe').attr('src','GetFinappDetails.html');
+         
+         	}); 	  
+         
+         	$(".js-modal-close, .modal-overlay").click(function() {
+         
+         		$(".modal-box, .modal-overlay").fadeOut(500, function() {
+         
+         			$(".modal-overlay").remove();
+         
+         		});
+         
+         	});	 
+         
+         	$(window).resize(function() {
+         
+         		$(".modal-box").css({
+         
+         			top: ($(window).height() - $(".modal-box").outerHeight()) / 2,
+         
+         			left: ($(window).width() - $(".modal-box").outerWidth()) / 2
+         
+         		});
+         
+         	});
+         	$(window).resize();
+         
+         });	
+         
+      </script>
+      <script>
+         var gotoTop = false;
+         var iframeId = "client-iframe";
+         var scrollTop = -1, previousHeight = -1, scrollNo = false;
+
+         /* CUSTOMER to have this logic on their client page */
+         /* STARTS HERE */
+         
+         function setNewThemeResizeFloater(ht){
+         
+             var postHeight = ht.data.height;
+             scrollTop = document.body.scrollTop;
+             //console.log( ht.data );
+             if( ht.data.modalPopupStatus === 'open' ) {
+                 // To go to iframe-top when modal popup is opened
+                 gotoTop = true;
+             } else {
+                 //To go to iframe-top when user is out of iframe during resize. ( ex: transaction finapp )
+                 var iframePosY = document.getElementById('client-iframe').offsetTop;
+                 var beforeIframePos = ( scrollTop >= iframePosY && scrollTop <= ( previousHeight + iframePosY ) );
+                 var afterIframePos = ( scrollTop >= iframePosY && scrollTop <= ( postHeight + iframePosY ) );
+                 if( beforeIframePos == true && afterIframePos == false ) {
+                     gotoTop = true;
+                 }
+             }
+             document.getElementById(iframeId).height = postHeight;
+         
+             if( gotoTop ) {
+                 gotoTop = false;
+                 window.scrollTo(0,document.getElementById('client-iframe').offsetTop);
+             }
+             previousHeight = postHeight;
+             if( !scrollNo ) {
+                 scrollNo = true;
+                 document.getElementById(iframeId).scrolling = "no";
+             }
+         }
+
+                  
+         function scrollToFn(obj){	
+             if(obj.data &&  (obj.data.xpos !== undefined)) {
+                 window.scrollTo(obj.data.xpos,  obj.data.ypos);
+             }	
+         }
+         
+         function loadModule(obj) {				
+             if( obj.data.containerFinapp === true ) {
+                 console.log('load module', obj.data.containerFinapp);
+                 window.scrollTo(0, document.getElementById('client-iframe').offsetTop);
+             }
+         }
+
+         /* ENDS HERE */     
+         
+         function setIframeHeight( ht) {
+             console.log('parent received message!:  ',ht.data);
+             var isIebrowser = isIE();
+             if(isIebrowser == -1 || isIebrowser > 9){
+             console.log('ht.data.height ',ht.data.height);
+             var iframeId = 'client-iframe';
+             //document.getElementById("modal-body").height = ht.data.height;
+             $('#'+iframeId).attr('height', ht.data.height);
+             } else if (isIebrowser == 9){
+                 var temp=ht.data.split("height=");
+                // document.getElementById("modal-body").height = temp[1];
+                $('#'+iframeId).attr('height', htemp[1]);
+             } else {
+                 console.log('code for ie8');
+             }
+         }
+         function cdvRedirection(obj){
+         console.log(obj.data);
+         }
+         function loginStatus(obj){
+         console.log(obj.data);
+         }
+         function renewClientSession(obj){
+         console.log(obj.data);
+         }
+         function ssoErrorHandle(obj){
+         console.log(obj.data);
+         }
+         
+         function handlePostMessage(obj){
+		 console.log(obj);
+             if(obj.data){
+                 if(obj.data.fnToCall ==="cdvRedirection"){
+                     cdvRedirection(obj);
+                 }else if(obj.data.fnToCall ==="accountStatus"){
+                     loginStatus(obj);
+                 }else if(obj.data.fnToCall ==="resizeFloater"){
+                     setIframeHeight(obj);
+                 }else if(obj.data.fnToCall ==="renewClientSession"){
+                     renewClientSession(obj);
+                 }else if(obj.data.fnToCall ==="ssoErrorHandle"){
+                     ssoErrorHandle(obj);
+                 }else if(obj.data.fnToCall ==="newThemeResizeFloater"){
+                    setNewThemeResizeFloater(obj);
+                 }else if(obj.data.fnToCall ==="scrollTo"){
+                        scrollToFn(obj);
+                 }else if(obj.data.fnToCall ==="loadModule"){
+                        loadModule(obj);
+                 }
+             }
+         }
+         
+         function isIE() {
+         
+             var rv = -1; // Return value assumes failure.
+         
+             if (navigator.appName == 'Microsoft Internet Explorer') {
+         
+               var ua = navigator.userAgent;
+         
+               var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+         
+               if (re.exec(ua) != null)
+         
+                 rv = parseFloat( RegExp.$1 );
+         
+             }
+         
+             return rv;
+         
+         }
+         
+         if (window.addEventListener) {
+         
+             window.addEventListener("message", handlePostMessage, false);
+         
+          } else {
+         
+             window.attachEvent("onmessage", handlePostMessage);
+         
+          }
+         
+      </script>	
+   </head>
+   <body>
+      <div class="title">
+         <h3>FastLink Sample Application</h3>
+      </div>
+      <div class="box"><a class="js-open-modal" href="#" data-modal-id="popup"> CLICK ME to open floater in an iFrame </a></div>
+      <div id="popup" class="modal-box modal-body">
+         <!-- <a href="#" class="close js-modal-close">X</a> -->
+         <iframe width="100%" height="1000" id="client-iframe" src="https://localhost:3000/authtest/hercules" frameborder="0"></iframe>
+      </div>
+      <ul id="helpContent" type="disc">
+         <li>The Yodlee FastLink FinApp can be displayed on Web pages with the help of iframes. Yodlee FastLink can appear as a floater within an iframe on a page.</li>
+         <li>The iframe specifications include the height and width of the frame. The floater iframes should be hidden by default with a transparent background and no border.</li>
+         <li>These iframes are shown when a floater action is triggered by the consumer.</li>
+         <li>The iframe must be able to process and execute SAML deep linking to Yodlee FastLink. The connection establishes a session between the consumers browser and the Yodlee FastLink server and loads the floaters onto the page. Yodlee constructs a session only at the first SAML request, the subsequent requests do not go through full session construction at Yodlee.</li>
+         <li>Yodlee FastLink can be in a separate domain or a subdomain of the customer site. For example, if IQ Bank is at https://www.iqbank.com, Yodlee FastLink will be hosted at a location similar to http://fastlink.iqbank.com.</li>
+      </ul>
+   </body>
+</html>
