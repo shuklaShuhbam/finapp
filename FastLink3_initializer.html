@@ -14,15 +14,17 @@
 
       fastlinkBtn.addEventListener('click', function() {
         window.fastlink.open({
-          fastLinkURL: 'https://development.node.yodlee.com/authenticate/development-258/?channelAppName=tieredpreprod',
-          accessToken: 'Bearer NKoPGGzQZ7hSfz01QlBoGh4B2cbw',
-          params: {
-            providerId: '18769', 
-			flow: 'add', 
-			userExperienceFlow: 'Aggregation', 
-			callback: '/ibv/wizard',
-			locationurl: 'https://shuklashuhbam.github.io/' 
-          },
+          fastLinkURL: 'https://fl4.prod.yodlee.com.au/authenticate/ANZDevexProd-320/fastlink/?channelAppName=anzdevexprod',
+              accessToken: 'Bearer FrCGExsrsbG6FlAbIUUO1cOPPKdG',
+              params: {
+                //configName : 'CacheTestConfiguration', 
+				//configName : '1234',
+				 configName: 'Aggregation',
+				//flow : 'refresh', 
+				//providerAccountId : 10004951
+				callbackLocation: 'top',
+				callback:'https://google.co.in'	
+            },
           onSuccess: function (data) {
             console.log(data);
           },
