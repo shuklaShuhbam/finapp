@@ -240,8 +240,8 @@
         if (mobileBrowser) {
             newWindow = window.open('', 'fastlinkWindow');
             form.setAttribute('target', 'fastlinkWindow');
-            if (!newWindow){
-                throw new Error('Unable to open new pop up tab');
+            if (!newWindow || newWindow.closed){
+                throw new Error('Unable to open new tab');
             }
             newWindow.focus();
         } else {
